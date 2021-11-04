@@ -3,6 +3,9 @@
 Dungeon Scene
 
 */
+//import CellularGeneration from './js/cell-pcg';
+
+//var t = new CellularGeneration(1,2,3);
 
 var cursors;
 var speed = 200;
@@ -15,7 +18,7 @@ var dungeonScene = new Phaser.Class({
 	init: function(){},
 	preload: function(){
 		
-		this.load.image("player","assets/tempPlayer.png");
+		this.load.image("player","assets/catSample.png");
 		
 	},
 	create: function(){
@@ -27,6 +30,7 @@ var dungeonScene = new Phaser.Class({
 		});
 		
 		player = this.physics.add.image(30,30,"player");
+		player.setScale(0.4);
 		player.setMaxVelocity(200);
 		player.setCollideWorldBounds(true);
 		
