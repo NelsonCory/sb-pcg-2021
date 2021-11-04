@@ -1,6 +1,8 @@
 /*
 	TownScreen
-
+		This screen should:
+			Allow player to purchase upgrades and place buildings
+			Player will carry upgrades into Dungeon
 */
 
 var townScene = new Phaser.Class({
@@ -22,6 +24,11 @@ var townScene = new Phaser.Class({
 			color: "#ff5733",
 			fontStyle: "bold"
 		});
+		
+		//for scene debug
+		this.input.on("pointerup", function(pointer){
+			this.scene.start("selectScene");
+		}, this);
 	},
 	update: function(){}
 

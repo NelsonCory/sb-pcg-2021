@@ -1,8 +1,14 @@
 /*
-
 Dungeon Scene
+	
+	This scene should:
+	
+		Generate a dungeon and populate it with enemies
+		Place the player in a valid tile
+		return to townScreen once all enemies are dead, or the player dies
 
 */
+
 //import CellularGeneration from './js/cell-pcg';
 
 //var t = new CellularGeneration(1,2,3);
@@ -35,6 +41,12 @@ var dungeonScene = new Phaser.Class({
 		player.setCollideWorldBounds(true);
 		
 		cursors = this.input.keyboard.createCursorKeys();
+		
+		
+		//for scene debug
+		this.input.on("pointerup", function(pointer){
+			this.scene.start("townScene");
+		}, this);
 	},
 	update: function(){
 		
@@ -59,7 +71,6 @@ var dungeonScene = new Phaser.Class({
 		else{
 			player.setVelocityY(0);
 		}
-		
 		
 	}
 

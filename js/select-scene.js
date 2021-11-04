@@ -2,6 +2,11 @@
 
 Select Screen
 
+	Allow player to choose their character for this dungeon
+	Allow player to choose dungeon difficulty
+		Dungeon in dungeon-scene should generate based on this
+		information
+
 */
 
 var selectScene = new Phaser.Class({
@@ -23,6 +28,11 @@ var selectScene = new Phaser.Class({
 			color: "#ff5733",
 			fontStyle: "bold"
 		});
+		
+		//for scene debug
+		this.input.on("pointerup", function(pointer){
+			this.scene.start("dungeonScene");
+		}, this);
 	},
 	update: function(){}
 
