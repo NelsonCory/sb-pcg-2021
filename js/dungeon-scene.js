@@ -9,13 +9,37 @@ Dungeon Scene
 
 */
 
-//import CellularGeneration from './js/cell-pcg';
+class CellularGeneration {
+	
+	constructor(arg, dim,iter){
+		
+		this.arg = arg;
+		this.dim = dim;
+		this.iter = iter;
+		//initialize graph
+		this.graph = new Array(this.dim).fill(new Array(this.dim).fill("1"));
+	}
+	
+	printGraphConsole(){
+		/*
+			Print graph to console
+		*/
+		console.log(this.graph);
+	}
+	
+	generateGraph(){
+		console.log("WIP generateGraph");
+		
+		
+		
+	}
+	
+}
 
-//var t = new CellularGeneration(1,2,3);
 
 var cursors;
+var dungeon = new CellularGeneration(5,5,5);
 var speed = 200;
-
 var dungeonScene = new Phaser.Class({
 	Extends: Phaser.Scene,
 	initialize: function(){
@@ -25,6 +49,7 @@ var dungeonScene = new Phaser.Class({
 	preload: function(){
 		
 		this.load.image("player","assets/catSample.png");
+		
 		
 	},
 	create: function(){
@@ -47,6 +72,8 @@ var dungeonScene = new Phaser.Class({
 		this.input.on("pointerup", function(pointer){
 			this.scene.start("townScene");
 		}, this);
+		dungeon.generateGraph();
+		dungeon.printGraphConsole();
 	},
 	update: function(){
 		
