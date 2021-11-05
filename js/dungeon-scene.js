@@ -48,7 +48,7 @@ var dungeonScene = new Phaser.Class({
 	init: function(){},
 	preload: function(){
 		
-		this.load.image("player","assets/catSample.png");
+		this.load.spritesheet("player","assets/brian_sprite_32x_32x.png", {frameWidth: 32, frameHeight: 32});
 		
 		
 	},
@@ -60,13 +60,42 @@ var dungeonScene = new Phaser.Class({
 			fontStyle: "bold"
 		});
 		
-		player = this.physics.add.image(30,30,"player");
-		player.setScale(0.4);
+		//Initialize User Input
+		cursors = this.input.keyboard.createCursorKeys();
+		
+		//Initialize Physics for Dungeon
+		player = this.physics.add.sprite(30,30,"player");
+		player.setScale(2);
 		player.setMaxVelocity(200);
 		player.setCollideWorldBounds(true);
 		
-		cursors = this.input.keyboard.createCursorKeys();
+		//Define animation loops
+		this.anims.create({
+			key: "left",
+			frames: this.anims.generateFrameNumbers("player", {start: 24, end: 35}),
+			frameRate: 8,
+			repeat: -1
+		});	
+		this.anims.create({
+			key: "right",
+			frames: this.anims.generateFrameNumbers("player", {start: 12 , end: 23 }),
+			frameRate: 8,
+			repeat: -1
+		});	
+		this.anims.create({
+			key: "idle",
+			frames: this.anims.generateFrameNumbers("player", {start: 0 , end: 11}),
+			frameRate: 3,
+			repeat: -1
+		});	
+		this.anims.create({
+			key: "debug",
+			frames: this.anims.generateFrameNumbers("player", {start:0, end: 0}),
+			frameRate: 5,
+		});
 		
+		//initial states of animations
+		player.anims.play("idle", true);
 		
 		//for scene debug
 		this.input.on("pointerup", function(pointer){
@@ -79,12 +108,16 @@ var dungeonScene = new Phaser.Class({
 		
 		//horizontal movement
 		if(cursors.left.isDown){
+			//player.anims.play("left", true);
+			player.anims.play("left", true);
 			player.setVelocityX(-speed);
 		}
 		else if (cursors.right.isDown){
+			player.anims.play("right", true);
 			player.setVelocityX(speed);
 		}
 		else{
+			player.anims.play("idle", true);
 			player.setVelocityX(0);
 		}
 		
@@ -97,6 +130,10 @@ var dungeonScene = new Phaser.Class({
 		}
 		else{
 			player.setVelocityY(0);
+		}
+		
+		if(player.body.velocity < 10){
+			player.anims.play("idle", true);
 		}
 		
 	}
