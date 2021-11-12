@@ -44,31 +44,34 @@ var dungeonScene = new Phaser.Class({
 	Extends: Phaser.Scene,
 	initialize: function(){
 		Phaser.Scene.call(this, {"key":"dungeonScene"});
+		this.moveCam = false;
 	},
 	init: function(){},
 	preload: function(){
 		
 		this.load.spritesheet("player","assets/brian_sprite_32x_32x_v2.png", {frameWidth: 32, frameHeight: 32});
-		
+		this.load.image("test_bg","assets/test_bg.png");
+		this.load.image("monster","assets/monster.png");
 		
 	},
 	create: function(){
 		
-		var text  = this.add.text(0,0,"DungeonScene", {
-			fontsize: 20,
-			color: "#ff5733",
-			fontStyle: "bold"
-		});
+		//debug
+		let bg = this.add.image(0, 0, "test_bg");
+		player = this.physics.add.sprite(300,300,"player");
+		this.cameras.main.setBounds(-512,-512,512*2,512*2);
+		this.physics.world.setBounds(-512,-512,512*2,512*2);
+	
 		
 		//Initialize User Input
 		cursors = this.input.keyboard.createCursorKeys();
 		
 		//Initialize Physics for Dungeon
-		player = this.physics.add.sprite(300,300,"player");
+
 		player.setScale(2);
 		player.setMaxVelocity(200);
 		player.setCollideWorldBounds(true);
-		
+		monster = this.physics.add.image(0,0,"monster");
 		//Define animation loops
 		this.anims.create({
 			key: "left",
@@ -104,9 +107,14 @@ var dungeonScene = new Phaser.Class({
 		//initial states of animations
 		player.anims.play("idle", true);
 		
+		this.cameras.main.startFollow(player, true);
+		
 		//for scene debug
 		dungeon.generateGraph();
 		dungeon.printGraphConsole();
+		
+		this.physics.add.overlap(player, monster, this.they_touchin, null, this);
+		
 	},
 	update: function(){
 		
@@ -162,7 +170,32 @@ var dungeonScene = new Phaser.Class({
 			player.setVelocityY(0);
 		}
 
+		//MONSTER AI
+		if(monster.x < player.x){
+			monster.setVelocityX(speed/2);
+		}
+		else if(monster.x > player.x){
+			monster.setVelocityX(-speed/2);
+		}
+		else{
+			monster.setVelocityX(0);
+		}
 		
+		
+		if(monster.y < player.y){
+			monster.setVelocityY(speed/2);
+		}
+		else if (monster.y > player.y){
+			monster.setVelocityY(-speed/2);
+		}
+		else{
+			monster.setVelocityY(0);
+		}
+		
+	},
+	they_touchin : function(){
+		
+		player.disableBody(true,true);
 	}
 
 });
