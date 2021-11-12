@@ -4,8 +4,6 @@
     <meta charset="UTF-8" />
     <title>Sandbox Game Fall 2021</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
-	<script src="js/town-scene.js"></script>
-	<script src="js/select-scene.js"></script>
 	<script src="js/dungeon-scene.js"></script>
     <style type="text/css">
         body {
@@ -28,9 +26,8 @@
 				debug: false
 			}
 		},
-		scene: [townScene, dungeonScene, selectScene] //dungeonScene, townScene, selectScene
-	};
-
+		scene: [dungeonScene] //dungeonScene
+	}
 	var game = new Phaser.Game(config);
 
 

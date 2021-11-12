@@ -48,7 +48,7 @@ var dungeonScene = new Phaser.Class({
 	init: function(){},
 	preload: function(){
 		
-		this.load.spritesheet("player","assets/brian_sprite_32x_32x.png", {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet("player","assets/brian_sprite_32x_32x_v2.png", {frameWidth: 32, frameHeight: 32});
 		
 		
 	},
@@ -64,7 +64,7 @@ var dungeonScene = new Phaser.Class({
 		cursors = this.input.keyboard.createCursorKeys();
 		
 		//Initialize Physics for Dungeon
-		player = this.physics.add.sprite(30,30,"player");
+		player = this.physics.add.sprite(300,300,"player");
 		player.setScale(2);
 		player.setMaxVelocity(200);
 		player.setCollideWorldBounds(true);
@@ -89,18 +89,22 @@ var dungeonScene = new Phaser.Class({
 			repeat: -1
 		});	
 		this.anims.create({
-			key: "debug",
-			frames: this.anims.generateFrameNumbers("player", {start:0, end: 0}),
-			frameRate: 5,
-		});
-		
+			key: "downwards",
+			frames: this.anims.generateFrameNumbers("player", {start: 36 , end: 47}),
+			frameRate: 8,
+			repeat: -1
+		});	
+		this.anims.create({
+			key: "upwards",
+			frames: this.anims.generateFrameNumbers("player", {start: 48 , end: 51}),
+			frameRate: 8,
+			repeat: -1
+		});	
+
 		//initial states of animations
 		player.anims.play("idle", true);
 		
 		//for scene debug
-		this.input.on("pointerup", function(pointer){
-			this.scene.start("townScene");
-		}, this);
 		dungeon.generateGraph();
 		dungeon.printGraphConsole();
 	},
@@ -108,7 +112,6 @@ var dungeonScene = new Phaser.Class({
 		
 		//horizontal movement
 		if(cursors.left.isDown){
-			//player.anims.play("left", true);
 			player.anims.play("left", true);
 			player.setVelocityX(-speed);
 		}
@@ -116,25 +119,49 @@ var dungeonScene = new Phaser.Class({
 			player.anims.play("right", true);
 			player.setVelocityX(speed);
 		}
-		else{
+		//vertical movement
+		if(cursors.up.isDown){ //if up is only movement
+	
+			player.setVelocityY(-speed);
+			if(cursors.left.isDown){
+				player.anims.play("left", true);
+				player.setVelocityX(-speed);
+			}
+			else if (cursors.right.isDown){
+				player.anims.play("right", true);
+				player.setVelocityX(speed);
+			} else{
+				player.anims.play("upwards", true);
+			}
+		}
+		else if (cursors.down.isDown){ //if down is only movement
+			player.setVelocityY(speed);
+			if(cursors.left.isDown){
+				player.anims.play("left", true);
+				player.setVelocityX(-speed);
+			}
+			else if (cursors.right.isDown){
+				player.anims.play("right", true);
+				player.setVelocityX(speed);
+			}
+			else{
+				player.anims.play("downwards", true);
+			}
+			
+		}
+
+		//if no movement is happening, play idle animation
+		if(!(cursors.left.isDown || cursors.right.isDown || cursors.up.isDown || cursors.down.isDown)){
 			player.anims.play("idle", true);
+			}
+		//no horizontal movement
+		if(!(cursors.left.isDown || cursors.right.isDown)){
 			player.setVelocityX(0);
 		}
-		
-		//vertical movement
-		if (cursors.up.isDown){
-			player.setVelocityY(-speed);
-		}
-		else if (cursors.down.isDown){
-			player.setVelocityY(speed);
-		}
-		else{
+		if(!(cursors.up.isDown || cursors.down.isDown)){
 			player.setVelocityY(0);
 		}
-		
-		if(player.body.velocity < 10){
-			player.anims.play("idle", true);
-		}
+
 		
 	}
 
