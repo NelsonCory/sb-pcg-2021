@@ -9,6 +9,7 @@ Dungeon Scene
 
 */
 
+//TODO - implement PCG algorithm
 class CellularGeneration {
 	
 	constructor(arg, dim,iter){
@@ -113,7 +114,7 @@ var dungeonScene = new Phaser.Class({
 		dungeon.generateGraph();
 		dungeon.printGraphConsole();
 		
-		this.physics.add.overlap(player, monster, this.they_touchin, null, this);
+		this.physics.add.overlap(player, monster, this.touchesPlayer, null, this);
 		
 	},
 	update: function(){
@@ -180,8 +181,6 @@ var dungeonScene = new Phaser.Class({
 		else{
 			monster.setVelocityX(0);
 		}
-		
-		
 		if(monster.y < player.y){
 			monster.setVelocityY(speed/2);
 		}
@@ -193,7 +192,7 @@ var dungeonScene = new Phaser.Class({
 		}
 		
 	},
-	they_touchin : function(){
+	touchesPlayer : function(){
 		
 		player.disableBody(true,true);
 	}
